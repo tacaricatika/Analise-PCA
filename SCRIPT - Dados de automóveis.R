@@ -199,4 +199,4 @@ print(valor_corr_coef)
 valor_corr_sig <- round(corr_valor$P, 5) # Matriz com p-valor dos coeficientes
 print(valor_corr_sig)
 
-####FIM!!!
+####FIM!!
