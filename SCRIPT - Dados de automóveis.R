@@ -9,7 +9,8 @@ pacotes <- c("plotly", #plataforma gráfica
              "psych", #elaboração da fatorial e estatísticas
              "ltm", #determinação do alpha de Cronbach pela função 'cronbach.alpha'
              "Hmisc", # matriz de correlações com p-valor
-             "readxl") # leitura de dados em Excel
+             "readxl", # leitura de dados em Excel
+             "qcc") # para fazer o diagrama de pareto
 
 #Instalação e carregamento dos pacotes
 if(sum(as.numeric(!pacotes %in% installed.packages())) != 0){
@@ -96,9 +97,21 @@ variancia_compartilhada <- as.data.frame(fatorial$Vaccounted) %>%
   slice(1:3)
 
 rownames(variancia_compartilhada) <- c("Autovalores",
-                                       "Prop. da Variância",
-                                       "Prop. da Variância Acumulada")
+                                       "Prop_da_Variância",
+                                       "Prop_da_Variância_Acumulada")
 view(variancia_compartilhada)
+
+
+#Montando um diagrama de pareto para análise dos fatores contruídos
+variancia_compartilhada<- as.data.frame(t(variancia_compartilhada))
+
+Fatores <- c('PC1', 'PC2', 'PC3', 'PC4', 'PC5', 'PC6', 'PC7', 'PC8', 'PC9', 'PC10','PC11', 'PC12', 'PC13')
+Prop_Variância <- as.vector(variancia_compartilhada$Prop_da_Variância)
+papareto <- data.frame(Fatores, Prop_Variância)
+names(Prop_Variância) <- Fatores
+
+pareto.chart(Prop_Variância, ylab = 'Soma da variância dos 13 fatores',
+             cumperc =seq(0, 100, by=5), main = 'Proporção das Variâncias' )
 
 
 # Variância compartilhada pelas variáveis originais para a formação de cada fator
